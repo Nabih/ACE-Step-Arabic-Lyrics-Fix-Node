@@ -1,11 +1,13 @@
-# Arabic Lyrics Fix — ComfyUI custom node
+# Arabic Lyrics Fix — ComfyUI custom node for ACE-Step
 # مصلّح الكلمات العربية — عقدة (Node) إضافة لـ ComfyUI
 
-Makes fully-vocalized fuṣḥā Arabic lyrics **sing correctly** in ACE-Step (and any
-lyric-driven music node). Built and user-verified on the song «أحبُّكِ» (2025-11-18).
+Makes fully-vocalized fuṣḥā Arabic lyrics **sing correctly** in ACE-Step. Built and
+user-verified on the song «أحبُّكِ» (2025-11-18). The transform is pure text
+preprocessing and may help other Arabic-lyric music models too (untested).
 
-يجعل كلمات الفصحى المُشكَّلة بالكامل **تُغنَّى بشكل صحيح** في ACE-Step (وأي عقدة موسيقية
-تعتمد على الكلمات). بُني وتم التحقق منه على أغنية «أحبُّكِ» (2025-11-18).
+يجعل كلمات الفصحى المُشكَّلة بالكامل **تُغنَّى بشكل صحيح** في ACE-Step. بُني وتم التحقق
+منه على أغنية «أحبُّكِ» (2025-11-18). التحوّل نصي بحت وقد يفيد نماذج موسيقية عربية
+أخرى أيضاً — غير مُختبَر عليها بعد.
 
 > 💬 Any comments or suggestions are welcome!
 > 💬 أي ملاحظات أو اقتراحات مرحب بها دائماً!
