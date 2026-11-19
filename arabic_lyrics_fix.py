@@ -41,15 +41,20 @@ def _normalize_order(text):
 
 
 def _bare_word(word):
-    """Bare hard spelling of one vocalized word: strip harakat, double shadda
+    """Model-friendly spelling: strip harakat EXCEPT the first letter's vowel
+    (the model otherwise guesses it — ghinā'an sang as 'ghāna'), double shadda
     letters, hard-te the ta marbuta. (Caller appends the tanwin noon.)"""
     out = []
+    kept_vowel = False
     for ch in word:
         if ch == "\u0651":
             if out:
                 out.append(out[-1])          # shadda -> doubled letter
         elif ch in _ANY_DIAC:
-            continue                          # strip harakat/sukun/tatweel
+            if not kept_vowel:
+                out.append(ch)               # first vowel = hint the model needs
+                kept_vowel = True
+            continue                          # later harakat stripped
         elif ch == "\u0629":
             out.append("\u062A")              # ة -> hard ت
         else:

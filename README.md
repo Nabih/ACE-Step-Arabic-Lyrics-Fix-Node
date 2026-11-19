@@ -17,17 +17,6 @@ other v1.5 checkpoints on Hugging Face:
 pure text preprocessing and may help other Arabic-lyric music models too
 (untested). A step-by-step guide lives in [TUTORIAL.md](TUTORIAL.md).
 
-### Hear it
-
-Same seed, same take structure — only the lyric spelling differs:
-
-| | Without the node | With the node |
-|---|---|---|
-| عَنْ عَيْنَيْكِ كَتَبَ الْبَحْرُ غِنَاءً | <audio controls src="assets/before_ghinaan.mp3"></audio> | <audio controls src="assets/after_ghinaan.mp3"></audio> |
-| يَا بَسْمَةً | <audio controls src="assets/before_basmatan.mp3"></audio> | <audio controls src="assets/after_basmatan.mp3"></audio> |
-
-(If the players don't render, the files are in `assets/`.)
-
 ### The problem
 
 Music models train on **unvocalized** Arabic lyrics, so fully-vocalized input gets
@@ -108,17 +97,6 @@ MIT
 [base](https://huggingface.co/ACE-Step/acestep-v15-xl-base)). التحوّل نصي بحت وقد
 يفيد نماذج موسيقية عربية أخرى أيضاً — غير مُختبَر عليها بعد. للاطلاع على شرح
 خطوة بخطوة انظر [TUTORIAL.md](TUTORIAL.md).
-
-### اسمعه
-
-البذرة نفسها، وبنية الأداء نفسها — الفرق في هجاء الكلمات فقط:
-
-| | بدون العقدة | مع العقدة |
-|---|---|---|
-| عَنْ عَيْنَيْكِ كَتَبَ الْبَحْرُ غِنَاءً | <audio controls src="assets/before_ghinaan.mp3"></audio> | <audio controls src="assets/after_ghinaan.mp3"></audio> |
-| يَا بَسْمَةً | <audio controls src="assets/before_basmatan.mp3"></audio> | <audio controls src="assets/after_basmatan.mp3"></audio> |
-
-(إن لم تظهر المشغّلات، فالملفات في `assets/`.)
 
 ### المشكلة
 
