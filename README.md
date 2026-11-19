@@ -1,40 +1,46 @@
 # Arabic Lyrics Fix — ComfyUI custom node for ACE-Step
-# مصلّح الكلمات العربية — عقدة (Node) إضافة لـ ComfyUI
-
-Makes fully-vocalized fuṣḥā Arabic lyrics **sing correctly** in ACE-Step. Built and
-user-verified on the song «أحبُّكِ» (2025-11-18). The transform is pure text
-preprocessing and may help other Arabic-lyric music models too (untested).
-
-يجعل كلمات الفصحى المُشكَّلة بالكامل **تُغنَّى بشكل صحيح** في ACE-Step. بُني وتم التحقق
-منه على أغنية «أحبُّكِ» (2025-11-18). التحوّل نصي بحت وقد يفيد نماذج موسيقية عربية
-أخرى أيضاً — غير مُختبَر عليها بعد.
+# [مصلّح الكلمات العربية](#العربية) — عقدة (Node) إضافة لـ ComfyUI لأجل ACE-Step
 
 > 💬 Any comments or suggestions are welcome!
 > 💬 أي ملاحظات أو اقتراحات مرحب بها دائماً!
 
-## The problem
-## المشكلة
+---
+
+## English
+
+Makes fully-vocalized fuṣḥā Arabic lyrics **sing correctly** in
+[ACE-Step](https://acestep.io/) (verified on **ACE-Step v1.5**, checkpoint
+[`acestep-v15-xl-turbo`](https://huggingface.co/ACE-Step/acestep-v15-xl-turbo);
+other v1.5 checkpoints on Hugging Face:
+[sft](https://huggingface.co/ACE-Step/acestep-v15-xl-sft),
+[base](https://huggingface.co/ACE-Step/acestep-v15-xl-base)). The transform is
+pure text preprocessing and may help other Arabic-lyric music models too
+(untested). A step-by-step guide lives in [TUTORIAL.md](TUTORIAL.md).
+
+### Hear it
+
+Same seed, same take structure — only the lyric spelling differs:
+
+| | Without the node | With the node |
+|---|---|---|
+| عَنْ عَيْنَيْكِ كَتَبَ الْبَحْرُ غِنَاءً | <audio controls src="assets/before_ghinaan.mp3"></audio> | <audio controls src="assets/after_ghinaan.mp3"></audio> |
+| يَا بَسْمَةً | <audio controls src="assets/before_basmatan.mp3"></audio> | <audio controls src="assets/after_basmatan.mp3"></audio> |
+
+(If the players don't render, the files are in `assets/`.)
+
+### The problem
 
 Music models train on **unvocalized** Arabic lyrics, so fully-vocalized input gets
 mangled: the tanwin is swallowed (غِنَاءً sung "ghina" instead of "ghinā'an"), the
 ta-marbuta hard-t drops (بَسْمَةً → "basman"), gemination is flaky, and fragile
 spellings break worst at line ends and in short lines.
 
-تتدرَّب النماذج الموسيقية على كلمات عربية **غير مُشكَّلة**، لذلك تُشوَّه الكلمات
-المُشكَّلة بالكامل: يُبتلَع التنوين (غِنَاءً تُغنَّى "ghina" بدل "ghinā'an")، ويَسقُط
-تاء التأنيث الساكنة (بَسْمَةً → "basman")، ويصبح التضعيف متذبذباً، وتنكسر الألفاظ
-الهشّة أكثر عند نهايات الأسطر وفي الأسطر القصيرة.
-
-## The fix (node-level, your lyrics stay intact)
-## الحل (على مستوى العقدة — ملف كلماتك يبقى كما هو سليماً)
+### The fix (node-level, your lyrics stay intact)
 
 The node rewrites fragile spellings into **bare letter forms the model knows**:
 
-تعيد العقدة كتابة الألفاظ الهشّة إلى **أشكال حرفية مجرَّدة يعرفها النموذج**:
-
 | Literary | Transformed | Sings |
 |---|---|---|
-| الأصلية | المُحوَّلة | تُغنَّى |
 | دُرَّةً | دررتن | dur-ratan |
 | بَسْمَةً | بسمتن | basmatan |
 | غِنَاءً | غناءن | ghinā'an (survives line ends) |
@@ -43,46 +49,32 @@ The node rewrites fragile spellings into **bare letter forms the model knows**:
 
 Per-word overrides handle stubborn cases (they beat every general rule):
 
-معالجات لكل كلمة على حدة للحالات العنيدة (وتتغلَّب على كل قاعدة عامة):
-
 ```
 الرَّدُّ => الرَّدْدُ
 ```
 
-## Install
-## التثبيت
+### Install
 
 Copy this folder into `ComfyUI/custom_nodes/`:
-
-انسخ هذا المجلد إلى `ComfyUI/custom_nodes/`:
 
 ```
 ComfyUI/custom_nodes/arabic-lyrics-fix-node/
 ├── __init__.py
-├── arabic_lyrics_fix.py     ← the node (no dependencies) — العقدة (بدون أي اعتماديات)
-├── patch_ace_tokenizer.py   ← optional tokenizer patcher — مُرقّع المُقسِّم الاختياري
+├── arabic_lyrics_fix.py     ← the node (no dependencies)
+├── patch_ace_tokenizer.py   ← optional tokenizer patcher
 └── README.md
 ```
 
 Restart ComfyUI. You get two nodes under **ToneTaste/text**:
 
-أعد تشغيل ComfyUI. ستحصل على عقدتين تحت **ToneTaste/text**:
-
 - **Arabic Lyrics Fix (fuṣḥā)** — lyrics in (STRING, multiline) → transformed lyrics
   out. Wire the output into your music node's `lyrics` input. Set
   `language=pass-through` for non-Arabic songs (input returned unchanged).
-- **Arabic Lyrics Fix (فصحى)** — الكلمات دخل (STRING متعدد الأسطر) → الكلمات
-  المحوَّلة خرج. صِل الخرج بمدخل `lyrics` في عقدتك الموسيقية. اجعل
-  `language=pass-through` للأغاني غير العربية (يعود الدخل دون تغيير).
 - **Arabic Lyrics Preview** — debug node: shows the transformed text in the UI/console.
-- **معاينة الكلمات العربية** — عقدة فحص: تعرض النص المحوَّل في الواجهة/وحدة التحكم.
 
-## Optional: patch the ACE-Step tokenizer itself
-## اختياري: ترقيع مُقسِّم الكلمات في ACE-Step نفسه
+### Optional: patch the ACE-Step tokenizer itself
 
 Belt-and-suspenders — expands any surviving tanwin diacritic inside ACE-Step:
-
-حزام وأمان — يوسِّع أي تنوين باقٍ داخل ACE-Step:
 
 ```
 python patch_ace_tokenizer.py --ace-path /path/to/ace-step
@@ -90,27 +82,108 @@ python patch_ace_tokenizer.py --ace-path /path/to/ace-step
 
 Idempotent; backs up the original as `lyric_tokenizer.py.orig`.
 
-قابل للتكرار بأمان؛ يحفظ نسخة من الملف الأصلي باسم `lyric_tokenizer.py.orig`.
-
-## Lyrics-writing conventions (verified)
-## قواعد كتابة الكلمات (مُتحقَّق منها عملياً)
+### Lyrics-writing conventions (verified)
 
 - Full harakat everywhere — mid-word vowels sing correctly
-- الحركات الكاملة في كل مكان — حروف المد داخل الكلمة تُغنَّى بشكل صحيح
 - Tanwin words: converted automatically; they sing best mid-phrase
-- كلمات التنوين: تُحوَّل تلقائياً؛ وتُغنَّى بأفضل شكل في وسط العبارة
 - Shadda: handled via doubling; if a specific word deserves its gemination,
   route it through the overrides box
-- الشدّة: تُعالَج بالتضعيف؛ وإذا استحقّت كلمةٌ معيّنة تضعيفها،
-  وجِّهها عبر صندوق المعالجات
 - Case endings and gemination vary from take to take — treat them as
   artistic choices (يحق للشاعر ما لا يحق لغيره)
+- For stubborn words, use the overrides box instead of editing your lyrics file
+
+### License
+
+MIT
+
+---
+
+## العربية
+
+يجعل كلمات الفصحى المُشكَّلة بالكامل **تُغنَّى بشكل صحيح** في
+[ACE-Step](https://acestep.io/) (مُتحقَّق عليه على **ACE-Step v1.5** بنموذج
+[`acestep-v15-xl-turbo`](https://huggingface.co/ACE-Step/acestep-v15-xl-turbo)؛
+النماذج الأخرى على Hugging Face:
+[sft](https://huggingface.co/ACE-Step/acestep-v15-xl-sft)،
+[base](https://huggingface.co/ACE-Step/acestep-v15-xl-base)). التحوّل نصي بحت وقد
+يفيد نماذج موسيقية عربية أخرى أيضاً — غير مُختبَر عليها بعد. للاطلاع على شرح
+خطوة بخطوة انظر [TUTORIAL.md](TUTORIAL.md).
+
+### اسمعه
+
+البذرة نفسها، وبنية الأداء نفسها — الفرق في هجاء الكلمات فقط:
+
+| | بدون العقدة | مع العقدة |
+|---|---|---|
+| عَنْ عَيْنَيْكِ كَتَبَ الْبَحْرُ غِنَاءً | <audio controls src="assets/before_ghinaan.mp3"></audio> | <audio controls src="assets/after_ghinaan.mp3"></audio> |
+| يَا بَسْمَةً | <audio controls src="assets/before_basmatan.mp3"></audio> | <audio controls src="assets/after_basmatan.mp3"></audio> |
+
+(إن لم تظهر المشغّلات، فالملفات في `assets/`.)
+
+### المشكلة
+
+تتدرَّب النماذج الموسيقية على كلمات عربية **غير مُشكَّلة**، لذلك تُشوَّه الكلمات
+المُشكَّلة بالكامل: يُبتلَع التنوين (غِنَاءً تُغنَّى "ghina" بدل "ghinā'an")، ويَسقُط
+تاء التأنيث الساكنة (بَسْمَةً → "basman")، ويصبح التضعيف متذبذباً، وتنكسر الألفاظ
+الهشّة أكثر عند نهايات الأسطر وفي الأسطر القصيرة.
+
+### الحل (على مستوى العقدة — ملف كلماتك يبقى كما هو سليماً)
+
+تعيد العقدة كتابة الألفاظ الهشّة إلى **أشكال حرفية مجرَّدة يعرفها النموذج**:
+
+| الأصلية | المُحوَّلة | تُغنَّى |
+|---|---|---|
+| دُرَّةً | دررتن | dur-ratan |
+| بَسْمَةً | بسمتن | basmatan |
+| غِنَاءً | غناءن | ghinā'an (تصمد عند نهايات الأسطر) |
+| الزَّمَانُ | ازْزَمَانُ | az-zamān (إدغام الحروف الشمسية) |
+| أُحِبُّكِ | أُحِبْبُكِ | uḥibbuki (شدّة معجمية) |
+
+معالجات لكل كلمة على حدة للحالات العنيدة (وتتغلَّب على كل قاعدة عامة):
+
+```
+الرَّدُّ => الرَّدْدُ
+```
+
+### التثبيت
+
+انسخ هذا المجلد إلى `ComfyUI/custom_nodes/`:
+
+```
+ComfyUI/custom_nodes/arabic-lyrics-fix-node/
+├── __init__.py
+├── arabic_lyrics_fix.py     ← العقدة (بدون أي اعتماديات)
+├── patch_ace_tokenizer.py   ← مُرقّع المُقسِّم الاختياري
+└── README.md
+```
+
+أعد تشغيل ComfyUI. ستحصل على عقدتين تحت **ToneTaste/text**:
+
+- **Arabic Lyrics Fix (فصحى)** — الكلمات دخل (STRING متعدد الأسطر) → الكلمات المحوَّلة
+  خرج. صِل الخرج بمدخل `lyrics` في عقدتك الموسيقية. اجعل `language=pass-through`
+  للأغاني غير العربية (يعود الدخل دون تغيير).
+- **معاينة الكلمات العربية** — عقدة فحص: تعرض النص المحوَّل في الواجهة/وحدة التحكم.
+
+### اختياري: ترقيع مُقسِّم الكلمات في ACE-Step نفسه
+
+حزام وأمان — يوسِّع أي تنوين باقٍ داخل ACE-Step:
+
+```
+python patch_ace_tokenizer.py --ace-path /path/to/ace-step
+```
+
+قابل للتكرار بأمان؛ يحفظ نسخة من الملف الأصلي باسم `lyric_tokenizer.py.orig`.
+
+### قواعد كتابة الكلمات (مُتحقَّق منها عملياً)
+
+- الحركات الكاملة في كل مكان — حروف المد داخل الكلمة تُغنَّى بشكل صحيح
+- كلمات التنوين: تُحوَّل تلقائياً؛ وتُغنَّى بأفضل شكل في وسط العبارة
+- الشدّة: تُعالَج بالتضعيف؛ وإذا استحقّت كلمةٌ معيّنة تضعيفها،
+  وجِّهها عبر صندوق المعالجات
 - الحركات الإعرابية والتضعيف تختلف من أداء لآخر — اعتبرها خيارات فنية
   (يحق للشاعر ما لا يحق لغيره)
-- For stubborn words, use the overrides box instead of editing your lyrics file
 - للحالات العنيدة، استخدم صندوق المعالجات بدل تعديل ملف كلماتك
 
-## License
-## الرخصة
+### الرخصة
 
 MIT
