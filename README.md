@@ -61,17 +61,8 @@ Idempotent; backs up the original as `lyric_tokenizer.py.orig`.
 
 - Full harakat everywhere — mid-word vowels sing correctly
 - Tanwin words: converted automatically; they sing best mid-phrase
-- Shadda: handled via doubling, but gemination is take-dependent (seed roulette)
-- Word-final case vowels (الردُّ's short u) are unsingable — model limit, don't fight it
+- Shadda: handled via doubling; if a specific word deserves its gemination,
+  route it through the overrides box
+- Case endings and gemination vary from take to take — treat them as
+  artistic choices (يحق للشاعر ما لا يحق لغيره)
 - For stubborn words, use the overrides box instead of editing your lyrics file
-
-## Limitations (proven — don't retry)
-
-- Gemination clusters are out-of-distribution; doubled-letter spellings help but
-  take-by-take variance remains
-- Singing tanwin as a long vowel (إشباع) is authentic tarab practice anyway —
-  Majida El Roumi sings «كلماتٍ» as "kalimā"
-
-## License
-
-MIT

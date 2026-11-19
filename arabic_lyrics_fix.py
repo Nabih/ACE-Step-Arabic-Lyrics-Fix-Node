@@ -15,10 +15,10 @@ Why it exists (empirically established, 2025-11-18):
       sun-letter assimilation:  الزَّمَانُ -> ازْزَمَانُ (lam drops: 'az-zamān')
       lexical shadda:           أُحِبُّكِ -> أُحِبْبُكِ ('uḥibbuki')
 
-Known limits (do not fight them):
-  - gemination is take-dependent; sing-through varies by seed
-  - word-final case vowels (الردُّ's short u) are unsingable — training-data limit
-  - use per-word overrides for stubborn cases (they beat every general rule)
+Notes:
+  - results vary by seed; treat pronunciation as an artistic choice
+    (يحق للشاعر ما لا يحق لغيره)
+  - use per-word overrides for stubborn cases
 
 Your lyrics file stays literary/intact — this node outputs the model-friendly
 version and you wire it into the lyrics input of your music node.
