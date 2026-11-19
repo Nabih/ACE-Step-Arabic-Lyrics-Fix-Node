@@ -17,6 +17,15 @@ other v1.5 checkpoints on Hugging Face:
 pure text preprocessing and may help other Arabic-lyric music models too
 (untested). A step-by-step guide lives in [TUTORIAL.md](TUTORIAL.md).
 
+**Heads-up:** ACE-Step routinely swallows or mangles sounds **mid-word** too —
+clusters get slurred, vowels go missing, whole syllables vanish. This is a model
+limitation, not an artifact of our spellings… probably. To be fully honest: we
+can't always tell model noise from spelling-induced noise. The tanwin/tamarbuta
+handling here is verified by ear against direct A/B takes, but mid-word glitches
+happen with raw, untouched lyrics as well. If a word keeps breaking no matter
+what, try an override, a different seed, or accept that the poet is entitled to
+what others are not (يحق للشاعر ما لا يحق لغيره).
+
 ### The problem
 
 Music models train on **unvocalized** Arabic lyrics, so fully-vocalized input gets
@@ -97,6 +106,14 @@ MIT
 [base](https://huggingface.co/ACE-Step/acestep-v15-xl-base)). التحوّل نصي بحت وقد
 يفيد نماذج موسيقية عربية أخرى أيضاً — غير مُختبَر عليها بعد. للاطلاع على شرح
 خطوة بخطوة انظر [TUTORIAL.md](TUTORIAL.md).
+
+**تنبيه:** ACE-Step كذلك يبتلع أو يشوّه أصواتاً **داخل الكلمة** نفسها —
+المجموعات الساكنة تتعرّج، والحركات تختفي، ومقاطع كاملة تزول. هذا قصور في النموذج،
+ليس أثراً من إملائنا… على الأرجح. وبصراحة كاملة: لا نستطيع دائماً التفريق بين
+عشوائية النموذج وعشوائية الإملاء. معالجة التنوين والتاء المربوطة هنا مُتحقَّق منها
+بالأذن عبر مقارنات مباشرة، لكن تشوهات وسط الكلمة تحدث مع كلمات خام لم نمسّها
+أيضاً. إذا استمرت كلمة في الانكسار مهما فعلت، جرّب معالجة أو بذرة أخرى، أو تقبّل
+أن للشاعر ما لا يحق لغيره (يحق للشاعر ما لا يحق لغيره).
 
 ### المشكلة
 
